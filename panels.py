@@ -37,7 +37,7 @@ class PanelDetector:
     def get_panels(self):
         '''Return list of boudning boxes that match panel criteria.
 
-        Bouding boxes are returned in a sorted list, highest bounding box
+        Bounding boxes are returned in a sorted list, highest bounding box
         in the image appears first.
         '''
         contours = self.get_contours()
