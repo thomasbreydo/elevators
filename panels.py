@@ -21,7 +21,7 @@ class PanelDetector:
         if len(approx) == 4:
             x, y, w, h = cv2.boundingRect(approx)
             if w * h >= AREA_THRESHOLD and w / h >= ASPECT_RATIO_THRESHOLD:
-                return (y, y + h, x, x + w)
+                return (y, y + h, x, x + w)  # ymin, ymax, xmin, xmax
 
     def get_contours(self):
         '''Return all contours.'''
@@ -35,9 +35,17 @@ class PanelDetector:
         return contours
 
     def get_panels(self):
-        '''Yield any contours that match panel criteria.'''
+        '''Return list of boudning boxes that match panel criteria.
+
+        Bouding boxes are returned in a sorted list, highest bounding box
+        in the image appears first.
+        '''
         contours = self.get_contours()
+        panels_bboxes = []
         for contour in contours:
-            corners = self.is_panel(contour)
-            if corners is not None:
-                yield corners
+            bbox = self.is_panel(contour)
+            if bbox is not None:
+                panels_bboxes.append(bbox)
+        # sort by smallest ymin
+        panels_bboxes.sort(key=lambda x: x[0])
+        return panels_bboxes

@@ -1,11 +1,14 @@
 import parse
 import cv2
-import pytesseract as ptt
+import os
+import time
 
 TESTDIR = 'tests'
+TESTIMG = 'test.jpg'
 
-image = cv2.VideoCapture(f'{TESTDIR}/temp.jpg')
+image = cv2.imread(os.path.join(TESTDIR, TESTIMG))
 
 parser = parse.DigitParser(image)
+
 for panel_str in parser.parse():
     print(panel_str)
