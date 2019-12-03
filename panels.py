@@ -1,9 +1,13 @@
 # import the necessary packages
 import cv2
+import math
 
 AREA_THRESHOLD = 500
 ASPECT_RATIO_THRESHOLD = 2.5
-BINARY_THRESHOLD = 50
+BINARY_THRESHOLD = 30
+DIST_THRESH = 50
+
+PERIMETER_SCALAR = 0.1
 
 GAUSSIAN_KERNEL = (5, 5)
 
@@ -16,7 +20,7 @@ class PanelDetector:
         '''Return bbox if ``contour`` matches panel criteria.'''
         # approximate a polygon
         perimeter = cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, 0.04 * perimeter, True)
+        approx = cv2.approxPolyDP(contour, PERIMETER_SCALAR * perimeter, True)
 
         if len(approx) == 4:
             x, y, w, h = cv2.boundingRect(approx)
@@ -26,9 +30,14 @@ class PanelDetector:
     def get_contours(self):
         '''Return all contours.'''
         gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
-        blurred = cv2.GaussianBlur(gray, GAUSSIAN_KERNEL, 0)
+        # blurred = cv2.GaussianBlur(gray, GAUSSIAN_KERNEL, 0)
+        blurred = cv2.bilateralFilter(gray, 5, 75, 75)
         _, binary = cv2.threshold(
             blurred, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY)
+
+        self.binary = binary
+
+        corners = cv2.cornerHarris(blurred, 2, 3, 0.04)
 
         contours, _ = cv2.findContours(binary.copy(), cv2.RETR_TREE,
                                        cv2.CHAIN_APPROX_NONE)
@@ -48,4 +57,36 @@ class PanelDetector:
                 panels_bboxes.append(bbox)
         # sort by smallest ymin
         panels_bboxes.sort(key=lambda x: x[0])
+        self.panel_bboxes = panels_bboxes
         return panels_bboxes
+
+
+class Corners:
+    def __init__(self, image):
+        self.image = image
+
+    def set_corners(self):
+        gray = cv2.cvtColor(self.image, cv2.COLOR_BGR2GRAY)
+        # blurred = cv2.GaussianBlur(gray, GAUSSIAN_KERNEL, 0)
+        blurred = cv2.bilateralFilter(gray, 5, 75, 75)
+        _, binary = cv2.threshold(
+            blurred, BINARY_THRESHOLD, 255, cv2.THRESH_BINARY)
+
+        self.binary = binary
+
+        corners = cv2.cornerHarris(blurred, 2, 3, 0.04)
+
+        self.corners = corners
+
+    def distance(self, pt1, pt2):
+        (x1, y1), (x2, y2) = pt1, pt2
+        return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
+
+    def reduce_corners(self):
+        self.reduced_corners = self.corners.copy()
+        i = 1
+        for pt1 in self.corners:
+            for pt2 in self.corners[i::1]:
+                if(self.distance(pt1, pt2) < DIST_THRESH):
+                    self.reduce_corners.remove(pt2)
+            i += 1
