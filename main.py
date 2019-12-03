@@ -29,6 +29,7 @@ def main():
 
         while was_not_stopped():
             image = cam.capture()
+            image = cv2.rotate(image, cv2.ROTATE_180)
             parser = panels.Corners(image)
             parser.set_corners()
             parser.reduce_corners()
@@ -57,10 +58,10 @@ def main():
                 with_corners = cv2.resize(
                     with_corners, (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
 
-                cv2.imshow(WINDOW_NAME + ' plain', image_plain)
-                cv2.imshow(WINDOW_NAME + ' binary', binary)
+                cv2.imshow(WINDOW_NAME + ' - Plain', image_plain)
+                cv2.imshow(WINDOW_NAME + ' - Binary', binary)
                 # cv2.imshow(WINDOW_NAME + '3', marked)
-                cv2.imshow(WINDOW_NAME + ' w/ corners', with_corners)
+                cv2.imshow(WINDOW_NAME + ' - Corners', with_corners)
             print(','.join(floors))
 
 

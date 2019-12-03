@@ -1,6 +1,5 @@
 from flask import Flask, render_template, jsonify
-
-app = Flask(__name__)
+from flask_socketio import SocketIO
 
 service_elevator_going_up = True
 service_elevator_going_down = True
@@ -8,6 +7,10 @@ service_elevator_floor = 12
 express_elevator_going_up = True
 express_elevator_going_down = True
 express_elevator_floor = 12
+
+app = Flask(__name__)
+app.config['SECRET_KEY'] = '5b6db414d4fd764a'
+socketio = SocketIO(app)
 
 
 @app.route('/')
@@ -33,4 +36,4 @@ def hello_name(name):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
