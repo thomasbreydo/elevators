@@ -44,6 +44,6 @@ sudo apt install libtesseract-dev
 
 ## Todos
 
-[ ] Test the project with the webcam
-[ ] Determine if image warping/tilt is necessary
-[ ] Rename the files, functions, and classes to something more readable
+- [ ] Test the project with the webcam
+- [ ] Determine if image warping/tilt is necessary
+- [ ] Rename the files, functions, and classes to something more readable
