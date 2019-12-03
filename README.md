@@ -47,3 +47,7 @@ sudo apt install libtesseract-dev
 - [ ] Test the project with the webcam
 - [ ] Determine if image warping/tilt is necessary
 - [ ] Rename the files, functions, and classes to something more readable
+- [ ] Package all the files into a wheel for production
+- [ ] Add a Flask server that serves the information as an api
+- [ ] Find a location for the Raspberry Pi and the camera
+- [ ] Deploy to a Raspberry Pi
