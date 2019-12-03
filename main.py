@@ -8,7 +8,7 @@ WAITKEY_DELAY = 1  # ms
 STOP_CHAR = 'q'
 
 PORT = 0  # if reading from file, set PORT to the video's path
-NUM_WARMUP = 15
+NUM_WARMUP = 0
 
 LOG = False
 
@@ -32,35 +32,36 @@ def main():
             parser = panels.Corners(image)
             parser.set_corners()
             parser.reduce_corners()
+            floors = []
 
             if LOG:
-                logger.log(panels)
+                logger.log(floors)
             if SHOW:
                 image_plain = cv2.resize(
                     image.copy(), ((SCREEN_WIDTH//4, SCREEN_HEIGHT//4)))
 
-                marked = parser.binary.copy()
-                for bbox in parser.panel_bboxes:
-                    marked = cv2.rectangle(
-                        marked, (bbox[2], bbox[0]), (bbox[3], bbox[1]), (0, 255, 0))
-                marked = cv2.resize(
-                    marked, (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
+                # marked = parser.binary.copy()
+                # for bbox in parser.panel_bboxes:
+                #     marked = cv2.rectangle(
+                #         marked, (bbox[2], bbox[0]), (bbox[3], bbox[1]), (0, 255, 0))
+                # marked = cv2.resize(
+                #     marked, (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
 
                 binary = cv2.resize(
                     parser.binary.copy(), (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
 
-                corner_points = image.copy()
-                for pt in parser.coor_tuples:
-                    cv2.circle(corner_points, tuple(
+                with_corners = image.copy()
+                for pt in parser.corners:
+                    cv2.circle(with_corners, tuple(
                         reversed(pt)), 3, (0, 0, 255), -1)
-                corner_points = cv2.resize(
-                    corner_points, (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
+                with_corners = cv2.resize(
+                    with_corners, (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
 
-                cv2.imshow(WINDOW_NAME + '1', image_plain)
-                cv2.imshow(WINDOW_NAME + '2', binary)
-                cv2.imshow(WINDOW_NAME + '3', marked)
-                cv2.imshow(WINDOW_NAME + '4', corner_points)
-            print(','.join(panels))
+                cv2.imshow(WINDOW_NAME + ' plain', image_plain)
+                cv2.imshow(WINDOW_NAME + ' binary', binary)
+                # cv2.imshow(WINDOW_NAME + '3', marked)
+                cv2.imshow(WINDOW_NAME + ' w/ corners', with_corners)
+            print(','.join(floors))
 
 
 if __name__ == "__main__":

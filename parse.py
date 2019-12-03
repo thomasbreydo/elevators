@@ -13,3 +13,14 @@ class DigitParser(panels.PanelDetector):
                 config='-c tessedit_char_whitelist=0123456789+- '
                 + '--psm 7 --oem 3'))
         return floors
+
+
+'''Rewrite to:
+full_image = webcam()
+panel_detector = PanelDetector(full_image)
+panel_images = PanelDetector.get_cropped_panels()  # runs get_panel_bboxes() then returns list of image.crop(panel)
+list_of_subimages = 
+for 
+
+
+'''
