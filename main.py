@@ -9,7 +9,7 @@ STOP_CHAR = 'q'
 PORT = 0  # if reading from file, set PORT to the video's path
 NUM_WARMUP = 75
 
-LOG = True
+LOG = False
 
 SHOW = True
 WINDOW_NAME = 'Video Stream'
@@ -26,16 +26,12 @@ def main():
 
         while was_not_stopped():
             image = cam.capture()
-            cv2.imshow(WINDOW_NAME, image)
+            if SHOW:
+                cv2.imshow(WINDOW_NAME, image)
             parser = parse.DigitParser(image)
-            for panel_str in parser.parse():
-                print(panel_str, end=',')
-
-            # if LOG:
-            #     logger.log(numbers)
-            # if SHOW:
-            #     # ADD ~draw bboxes on image FUNCTIONALITY
-            #     cv2.imshow(WINDOW_NAME, image)
+            panels = parser.parse()
+            if LOG:
+                logger.log(panels)
 
 
 if __name__ == "__main__":
