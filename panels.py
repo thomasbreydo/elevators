@@ -1,6 +1,7 @@
 # import the necessary packages
 import cv2
 import math
+import numpy as np
 
 AREA_THRESHOLD = 500
 ASPECT_RATIO_THRESHOLD = 2.5
@@ -10,6 +11,9 @@ DIST_THRESH = 50
 PERIMETER_SCALAR = 0.1
 
 GAUSSIAN_KERNEL = (5, 5)
+
+CORNER_ARGS = [2, 3, 0.04]
+CORNER_THRESH = 0.1  # lower for more corners detected
 
 
 class PanelDetector:
@@ -37,7 +41,7 @@ class PanelDetector:
 
         self.binary = binary
 
-        corners = cv2.cornerHarris(blurred, 2, 3, 0.04)
+        # corners = cv2.cornerHarris(blurred, 2, 3, 0.04)
 
         contours, _ = cv2.findContours(binary.copy(), cv2.RETR_TREE,
                                        cv2.CHAIN_APPROX_NONE)
@@ -74,19 +78,23 @@ class Corners:
 
         self.binary = binary
 
-        corners = cv2.cornerHarris(blurred, 2, 3, 0.04)
+        dst = cv2.cornerHarris(blurred, *CORNER_ARGS)
+        mask = np.zeros_like(gray)
+        mask[dst > CORNER_THRESH*dst.max()] = 255
+        coordinates = np.argwhere(mask)
 
-        self.corners = corners
+        self.corners = [tuple(l) for l in [l.tolist()
+                                           for l in list(coordinates)]]
 
     def distance(self, pt1, pt2):
         (x1, y1), (x2, y2) = pt1, pt2
         return math.sqrt((x2 - x1)**2 + (y2 - y1)**2)
 
     def reduce_corners(self):
-        self.reduced_corners = self.corners.copy()
+        coor_tuples_copy = self.corners
         i = 1
         for pt1 in self.corners:
             for pt2 in self.corners[i::1]:
-                if(self.distance(pt1, pt2) < DIST_THRESH):
-                    self.reduce_corners.remove(pt2)
+                if(self.distance(pt1, pt2) < 50):
+                    coor_tuples_copy.remove(pt2)
             i += 1
