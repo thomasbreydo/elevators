@@ -12,25 +12,27 @@
       h1 {
         color: white;
       }
+      div {
+        color: white;
+      }
     </style>
   </head>
   <body>
-    {% if going_up %}
-    <h1>Going Up Arrow!!</h1>
-    {% else %}
-    <h1>Going Down Arrow!!</h1>
-    {% endif %}
+    <h1>Data</h1>
+    <div id="div"></div>
   </body>
 
-  <script
-    src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"
-    integrity="sha256-bQmrZe4yPnQrLTY+1gYylfNMBuGfnT/HKsCGX+9Xuqo="
-    crossorigin="anonymous"
-  ></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   <script>
     var socket = io();
     socket.on("connect", function() {
-      socket.emit("my event", { data: "I'm connected!" });
+      socket.emit("connected");
+    });
+
+    socket.on("data", function(res) {
+      console.log(res);
+      $("#div").html(JSON.stringify(res));
     });
   </script>
 </html>

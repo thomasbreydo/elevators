@@ -16,7 +16,6 @@ SHOW = True
 WINDOW_NAME = 'Video Stream'
 SCREEN_HEIGHT = 1440
 SCREEN_WIDTH = 2304
-ROTATION_AMOUNT = cv2.ROTATE_180
 
 
 def was_not_stopped():
@@ -30,7 +29,7 @@ def main():
 
         while was_not_stopped():
             image = cam.capture()
-            image = cv2.rotate(image, ROTATION_AMOUNT)
+            image = cv2.rotate(image, cv2.ROTATE_180)
             parser = panels.Corners(image)
             parser.set_corners()
             parser.reduce_corners()
@@ -55,7 +54,7 @@ def main():
                 with_corners = image.copy()
                 for pt in parser.corners:
                     cv2.circle(with_corners, tuple(
-                        reversed(pt)), 3, (0, 0, 255), -1)
+                        reversed(pt)), 10, (0, 0, 255), -1)
                 with_corners = cv2.resize(
                     with_corners, (SCREEN_WIDTH//4, SCREEN_HEIGHT//4))
 

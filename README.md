@@ -16,6 +16,23 @@ A python project that will be able to run on a computer to get the video feed of
 1. Follow the Tesseract OCR installation instructions below for your platform.
 2. Move the "arrows.traineddata" and "segment.traineddata" files from the traineddata directory into the language directory for Tesseract. If you need more help with that Google some instructions.
 3. Install all the requirements from the pip requirements file - could be done with 'pip install -r requirements.txt' in the directory with the requirements file in it.
+4. Install LibYAML
+
+## LibYAML Installation
+
+### Mac OSX
+
+You can install LibYAML to provide speed boost for Watchdog.
+
+```bash
+brew install libyaml
+```
+
+### Linux
+
+```bash
+sudo aptitude install libyaml-dev
+```
 
 ## Tesseract OCR Installation
 
