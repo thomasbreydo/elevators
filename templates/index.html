@@ -4,67 +4,42 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Elevator Locator</title>
+    <title>Elevators</title>
     <style>
-      @font-face {
-        font-family: Raleway;
-        src: url("templates/fonts/Raleway-SemiBold.ttf");
-      }
       body {
         margin: 0;
         padding: 0;
-        font-family: Raleway, sans-serif;
-        background: #00b4db; /* fallback for old browsers */
-        background: -webkit-linear-gradient(
-          to left,
-          #0083b0,
-          #00b4db
-        ); /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(
-          to left,
-          #0083b0,
-          #00b4db
-        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        font-family: "Helvetica";
+        background: #1a1a1d;
       }
       h1 {
         color: white;
         width: 100vw;
         height: 40px;
-        margin: 20px 0px;
+        margin: 20px 0 20px 0;
         text-align: center;
+        font-size: 45px;
       }
-      h3 {
+      h2 {
         color: white;
         height: 20px;
-        margin: 20px 0px;
+        margin: 15vh 0 30px 0;
         text-align: center;
-      }
-      div {
-        color: white;
       }
       .loading {
         position: absolute;
         top: calc(50% - 100px);
         left: calc(50% - 100px);
       }
-      #elevators {
-        display: flex;
-        overflow: hidden;
-        padding: 15px 0;
-      }
       #service-elevator {
-        width: 50vw;
+        width: 100vw;
         /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
-        height: calc(100vh - 40px - 20px - 20px - 15px - 15px);
-        float: left;
-        overflow: hidden;
+        height: calc(60vh - 40px - 100px - 15px - 15px);
       }
       #express-elevator {
-        width: 50vw;
+        width: 100vw;
         /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
-        height: calc(100vh - 40px - 20px - 20px - 15px - 15px);
-        float: right;
-        overflow: hidden;
+        height: calc(60vh - 40px - 100px - 15px - 15px);
       }
       .content-container {
         display: flex;
@@ -73,10 +48,38 @@
         /* 100% height - height of header - margin top of header - margin bottom of header*/
         height: calc(100% - 20px - 20px - 20px - 20px);
       }
+      @media only screen and (min-width: 800px) {
+        #elevators {
+          display: flex;
+          overflow: hidden;
+        }
+        #service-elevator {
+          width: 50vw;
+          /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
+          height: calc(90vh - 40px - 100px - 15px - 15px);
+          float: left;
+          overflow: hidden;
+        }
+        #express-elevator {
+          width: 50vw;
+          /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
+          height: calc(90vh - 40px - 100px - 15px - 15px);
+          float: right;
+          overflow: hidden;
+        }
+        .content-container {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          /* 100% height - height of header - margin top of header - margin bottom of header*/
+          height: calc(70% - 20px - 20px - 20px - 20px);
+        }
+      }
       .arrows {
         height: 250px;
         width: 175px;
         vertical-align: middle;
+        margin: 0 0 0 60px;
       }
       .up-arrow {
         fill: none;
@@ -88,20 +91,21 @@
         stroke: white;
         stroke-width: 5px;
       }
-      .floor {
+      .elevator-floor {
         font-size: 100px;
+        color: white;
         text-align: center;
-        /* 100% width - width of arrows - width of arrows on other side to center text under the other text*/
-        width: calc(100% - 175px - 175px);
+        /* 100% width - width of arrows - width of arrows on other side to center text under the other text - margin left of arrows - margin right of arrows*/
+        width: calc(100% - 175px - 175px - 60px - 60px);
       }
     </style>
   </head>
   <body>
-    <h1>Elevator Locator</h1>
+    <h1>Elevators</h1>
 
     <div id="elevators">
       <div id="service-elevator">
-        <h3>Service Elevator</h3>
+        <h2>Service Elevator</h2>
         <div class="content-container">
           <svg class="arrows" viewBox="25 -25 200 300">
             <g>
@@ -115,11 +119,11 @@
               C194.965,142.926,190.163,140,184.923,140z"/>
             </g>
           </svg>
-          <p class="floor">--</p>
+          <p class="elevator-floor">--</p>
         </div>
       </div>
       <div id="express-elevator">
-        <h3>Express Elevator</h3>
+        <h2>Express Elevator</h2>
         <div class="content-container">
           <svg class="arrows" viewBox="25 -25 200 300">
             <g>
@@ -133,7 +137,7 @@
               C194.965,142.926,190.163,140,184.923,140z"/>
             </g>
           </svg>
-          <p class="floor">--</p>
+          <p class="elevator-floor">--</p>
         </div>
       </div>
     </div>
@@ -147,8 +151,42 @@
       socket.emit("connected");
     });
 
-    socket.on("data", function(res) {
-      $("");
+    socket.on("data", function(data) {
+      // Service Elevator
+      $("div#service-elevator")
+        .children("div.content-container")
+        .children("svg.arrows")
+        .children("g")
+        .children(".up-arrow")
+        .css("fill", data.service_elevator_going_up ? "white" : "none");
+      $("div#service-elevator")
+        .children("div.content-container")
+        .children("svg.arrows")
+        .children("g")
+        .children(".down-arrow")
+        .css("fill", data.service_elevator_going_down ? "white" : "none");
+      $("div#service-elevator")
+        .children("div.content-container")
+        .children("p.elevator-floor")
+        .html(data.service_elevator_floor);
+
+      // Express Elevator
+      $("div#express-elevator")
+        .children("div.content-container")
+        .children("svg.arrows")
+        .children("g")
+        .children(".up-arrow")
+        .css("fill", data.express_elevator_going_up ? "white" : "none");
+      $("div#express-elevator")
+        .children("div.content-container")
+        .children("svg.arrows")
+        .children("g")
+        .children(".down-arrow")
+        .css("fill", data.express_elevator_going_down ? "white" : "none");
+      $("div#express-elevator")
+        .children("div.content-container")
+        .children("p.elevator-floor")
+        .html(data.express_elevator_floor);
     });
   </script>
 </html>
