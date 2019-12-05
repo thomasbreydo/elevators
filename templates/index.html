@@ -4,22 +4,139 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Hello World!</title>
+    <title>Elevator Locator</title>
     <style>
+      @font-face {
+        font-family: Raleway;
+        src: url("templates/fonts/Raleway-SemiBold.ttf");
+      }
       body {
-        background-color: black;
+        margin: 0;
+        padding: 0;
+        font-family: Raleway, sans-serif;
+        background: #00b4db; /* fallback for old browsers */
+        background: -webkit-linear-gradient(
+          to left,
+          #0083b0,
+          #00b4db
+        ); /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(
+          to left,
+          #0083b0,
+          #00b4db
+        ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
       }
       h1 {
         color: white;
+        width: 100vw;
+        height: 40px;
+        margin: 20px 0px;
+        text-align: center;
+      }
+      h3 {
+        color: white;
+        height: 20px;
+        margin: 20px 0px;
+        text-align: center;
       }
       div {
         color: white;
       }
+      .loading {
+        position: absolute;
+        top: calc(50% - 100px);
+        left: calc(50% - 100px);
+      }
+      #elevators {
+        display: flex;
+        overflow: hidden;
+        padding: 15px 0;
+      }
+      #service-elevator {
+        width: 50vw;
+        /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
+        height: calc(100vh - 40px - 20px - 20px - 15px - 15px);
+        float: left;
+        overflow: hidden;
+      }
+      #express-elevator {
+        width: 50vw;
+        /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
+        height: calc(100vh - 40px - 20px - 20px - 15px - 15px);
+        float: right;
+        overflow: hidden;
+      }
+      .content-container {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        /* 100% height - height of header - margin top of header - margin bottom of header*/
+        height: calc(100% - 20px - 20px - 20px - 20px);
+      }
+      .arrows {
+        height: 250px;
+        width: 175px;
+        vertical-align: middle;
+      }
+      .up-arrow {
+        fill: none;
+        stroke: white;
+        stroke-width: 5px;
+      }
+      .down-arrow {
+        fill: none;
+        stroke: white;
+        stroke-width: 5px;
+      }
+      .floor {
+        font-size: 100px;
+        text-align: center;
+        /* 100% width - width of arrows - width of arrows on other side to center text under the other text*/
+        width: calc(100% - 175px - 175px);
+      }
     </style>
   </head>
   <body>
-    <h1>Data</h1>
-    <div id="div"></div>
+    <h1>Elevator Locator</h1>
+
+    <div id="elevators">
+      <div id="service-elevator">
+        <h3>Service Elevator</h3>
+        <div class="content-container">
+          <svg class="arrows" viewBox="25 -25 200 300">
+            <g>
+              <!-- prettier-ignore -->
+              <path class="up-arrow" d="M63.618,108.541h121.305c5.24,0,10.042-2.926,12.443-7.584c2.402-4.656,2.002-10.266-1.036-14.535L140.946,8.6
+              c-3.84-5.394-10.054-8.6-16.676-8.6s-12.836,3.205-16.676,8.6L52.211,86.422c-3.038,4.27-3.438,9.879-1.036,14.535
+              C53.576,105.615,58.378,108.541,63.618,108.541z"/>
+              <!-- prettier-ignore -->
+              <path class="down-arrow" d="M184.923,140H63.618c-5.24,0-10.042,2.926-12.443,7.584c-2.402,4.656-2.002,10.266,1.036,14.535l55.384,77.822
+              c3.84,5.395,10.054,8.6,16.676,8.6s12.836-3.205,16.676-8.6l55.384-77.822c3.038-4.27,3.438-9.879,1.036-14.535
+              C194.965,142.926,190.163,140,184.923,140z"/>
+            </g>
+          </svg>
+          <p class="floor">--</p>
+        </div>
+      </div>
+      <div id="express-elevator">
+        <h3>Express Elevator</h3>
+        <div class="content-container">
+          <svg class="arrows" viewBox="25 -25 200 300">
+            <g>
+              <!-- prettier-ignore -->
+              <path class="up-arrow" d="M63.618,108.541h121.305c5.24,0,10.042-2.926,12.443-7.584c2.402-4.656,2.002-10.266-1.036-14.535L140.946,8.6
+              c-3.84-5.394-10.054-8.6-16.676-8.6s-12.836,3.205-16.676,8.6L52.211,86.422c-3.038,4.27-3.438,9.879-1.036,14.535
+              C53.576,105.615,58.378,108.541,63.618,108.541z"/>
+              <!-- prettier-ignore -->
+              <path class="down-arrow" d="M184.923,140H63.618c-5.24,0-10.042,2.926-12.443,7.584c-2.402,4.656-2.002,10.266,1.036,14.535l55.384,77.822
+              c3.84,5.395,10.054,8.6,16.676,8.6s12.836-3.205,16.676-8.6l55.384-77.822c3.038-4.27,3.438-9.879,1.036-14.535
+              C194.965,142.926,190.163,140,184.923,140z"/>
+            </g>
+          </svg>
+          <p class="floor">--</p>
+        </div>
+      </div>
+    </div>
   </body>
 
   <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -31,8 +148,7 @@
     });
 
     socket.on("data", function(res) {
-      console.log(res);
-      $("#div").html(JSON.stringify(res));
+      $("");
     });
   </script>
 </html>

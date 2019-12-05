@@ -51,4 +51,4 @@ if __name__ == '__main__':
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
-    observer.join(timeout=45)
+    observer.join(timeout=15)
