@@ -26,6 +26,7 @@ def main():
             image = cam.capture()
             rotated = cv2.rotate(image, cv2.ROTATE_180)
             parser = parser.ElevatorParser(rotated)
+            parser._get_corners()
 
             # DEBUG
 

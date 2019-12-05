@@ -2,7 +2,7 @@ import cv2
 
 BI_FILTER_ARGS = [5, 75, 75]
 BINARY_THRESH = 30
-CORNER_ARGS = [2, 3, 0.04]
+CORNER_ARGS = [100, 0.01, 10]
 
 
 class ElevatorParser:
@@ -18,7 +18,10 @@ class ElevatorParser:
             self.blurred_image, BINARY_THRESH, 255, cv2.THRESH_BINARY)
 
     def _get_corners(self):
-        dst = cv2.cornerHarris(blurred, *CORNER_ARGS)
+        dst = cv2.goodFeaturesToTrack(self.blurred_image, *CORNER_ARGS)
+
+        # DEBUG
+        print(dst)
 
     def _warp_perspective(self, corners):
         pass
