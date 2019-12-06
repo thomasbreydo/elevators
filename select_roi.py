@@ -1,6 +1,10 @@
 import cv2
+import camera
 
-IMAGE = cv2.imread('tests/test.jpg')
+with camera.GetCamera(0) as cam:
+    for i in range(100):
+        cam.capture()
+    IMAGE = cam.capture()
 
 
 def convert_roi_to_bbox(roi):
@@ -11,8 +15,7 @@ def main():
     ROIs = cv2.selectROIs(
         'Select -> <Enter> -> Select -> <Enter> -> <Esc>', IMAGE, fromCenter=False)  # (xmin, ymin, w, h)
     ROI_bboxes = list(map(convert_roi_to_bbox, ROIs))
-    ROI_bboxes.sort(key=lambda x: x[0])  # sort on ymin
-    print('\n--\nBoxes in descending order:')
+
     [print(f'Box {i}: {bbox}') for i, bbox in enumerate(ROI_bboxes)]
 
 
