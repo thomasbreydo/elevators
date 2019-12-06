@@ -46,6 +46,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # Process(target=main).start()
-    # Process(target=api.main, args=(ELEVATOR1, ELEVATOR2)).start()
+    Process(target=main).start()
+    Process(target=api.main).start()

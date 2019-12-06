@@ -5,32 +5,54 @@ from flask import Flask, render_template, jsonify, request
 import time
 import json
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '5b6db414d4fd764a'
-socketio = SocketIO(app)
-
-# JSON_NAME = "state.json"
+data = {}
 
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+def main():
+    app = Flask(__name__)
+    app.config['SECRET_KEY'] = '5b6db414d4fd764a'
+    socketio = SocketIO(app)
 
+    @app.route('/')
+    def index():
+        return render_template('index.html')
 
-@app.route('/api')
-def api():
-    return read_file()
+    @app.route('/api')
+    def api():
+        return data
 
+    @socketio.on('connected')
+    def connected():
+        emit('data', data)
 
-@socketio.on('connected')
-def connected():
-    emit('data', read_file())
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
 
+ def parser(local_elevator, express_elevator):
+    if(type(local_elevator) == 'string' and type(express_elevator) == 'string'):
+        local_elevator = local_elevator.replace(' ', '')
+        express_elevator = express_elevator.replace(' ', '')
+        if '+' in local_elevator:
+            data.local_elevator.up = True
+            local_elevator = local_elevator.replace('+', '')
+            data.local_elevator.floor = local_elevator
+        elif '-' in local_elevator:
+            data.local_elevator.down = False
+            local_elevator = local_elevator.replace('-', '')
+            data.local_elevator.floor = local_elevator
+        else:
+            data.local_elevator.up = False
+            data.local_elevator.down = False
+            data.local_elevator.floor = local_elevator
 
-def read_file():
-    return json.load(f)
-
-
-def main(elevator1_position, elevator2_position):
-    if(type(elevator1_position) == 'string' and type(elevator2_position) == 'string'):
-        socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+        if '+' in express_elevator:
+            data.express_elevator.up = True
+            express_elevator = express_elevator.replace('+', '')
+            data.express_elevator.floor = express_elevator
+        elif '-' in express_elevator:
+            data.express_elevator.down = False
+            express_elevator = express_elevator.replace('-', '')
+            data.express_elevator.floor = express_elevator
+        else:
+            data.express_elevator.up = False
+            data.express_elevator.down = False
+            data.express_elevator.floor = express_elevator
