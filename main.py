@@ -61,6 +61,8 @@ def main():
             print(elevator1)
             print(elevator2)
 
+            api.parse_floor_str(elevator1, elevator2)
+
 
 if __name__ == "__main__":
     Process(target=main).start()

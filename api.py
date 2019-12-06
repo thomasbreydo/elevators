@@ -27,7 +27,8 @@ def main():
 
     socketio.run(app, host='0.0.0.0', port=5000, debug=True)
 
- def parser(local_elevator, express_elevator):
+
+def parse_floor_str(local_elevator, express_elevator):
     if(type(local_elevator) == 'string' and type(express_elevator) == 'string'):
         local_elevator = local_elevator.replace(' ', '')
         express_elevator = express_elevator.replace(' ', '')
