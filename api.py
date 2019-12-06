@@ -28,8 +28,7 @@ def connected():
 
 
 def read_file():
-    with open(JSON_NAME) as f:
-        return json.load(f)
+    return json.load(f)
 
 
 class FileChangeHandler(FileSystemEventHandler):
