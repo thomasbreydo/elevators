@@ -9,13 +9,8 @@ STOP_CHAR = 'q'
 PORT = 0  # if reading from file, set PORT to the video's path
 
 # ymin, ymax, xmin, xmax
-PANEL1 = ()
-PANEL2 = ()
-
-#  DEBUG
-WINDOW_NAME = 'Video Stream'
-SCREEN_HEIGHT = 900
-SCREEN_WIDTH = 1440
+PANEL1 = (239, 390, 38, 500)
+PANEL2 = (10, 100, 108, 225)
 
 
 def was_not_stopped():
@@ -40,10 +35,14 @@ def main():
             rotated_bottom = cv2.rotate(bottom, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
             # parse
-            parser_top = parser.ElevatorParser(rotated_top)
-            parser_bottom = parser.ElevatorParser(rotated_bottom)
-            elevator1 = parser_top.parse()
-            elevator2 = parser_bottom.parse()
+            # parser_top = parser.ElevatorParser(rotated_top)
+            # parser_bottom = parser.ElevatorParser(rotated_bottom)
+            # elevator1 = parser_top.parse()
+            # elevator2 = parser_bottom.parse()
+
+            # display
+            cv2.imshow('ELEVATOR1', rotated_top)
+            cv2.imshow('ELEVATOR2', rotated_bottom)
 
 
 if __name__ == "__main__":
