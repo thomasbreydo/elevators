@@ -61,10 +61,9 @@ def main():
             print(elevator1)
             print(elevator2)
 
-            # api.parse_floor_str(elevator1, elevator2)
+            api.parse_floor_str(elevator1, elevator2)
 
 
 if __name__ == "__main__":
-    main()
-    # Process(target=main).start()
-    # Process(target=api.main).start()
+    Process(target=api.main).start()
+    Process(target=main).start()

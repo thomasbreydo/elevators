@@ -31,7 +31,7 @@
         top: calc(50% - 100px);
         left: calc(50% - 100px);
       }
-      #service-elevator {
+      #local-elevator {
         width: 100vw;
         /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
         height: calc(60vh - 40px - 100px - 15px - 15px);
@@ -53,7 +53,7 @@
           display: flex;
           overflow: hidden;
         }
-        #service-elevator {
+        #local-elevator {
           width: 50vw;
           /* 100% height - height of header - margin top of header - margin bottom of header - to make it fit on screen - top padding of elevators - bottom padding of elevators*/
           height: calc(90vh - 40px - 100px - 15px - 15px);
@@ -104,8 +104,8 @@
     <h1>Elevators</h1>
 
     <div id="elevators">
-      <div id="service-elevator">
-        <h2>Service Elevator</h2>
+      <div id="local-elevator">
+        <h2>Local Elevator</h2>
         <div class="content-container">
           <svg class="arrows" viewBox="25 -25 200 300">
             <g>
@@ -152,23 +152,26 @@
     });
 
     socket.on("data", function(data) {
-      // Service Elevator
-      $("div#service-elevator")
+      console.log(data);
+      data = JSON.parse(data);
+      // console.log(data);
+      // Local Elevator
+      $("div#local-elevator")
         .children("div.content-container")
         .children("svg.arrows")
         .children("g")
         .children(".up-arrow")
-        .css("fill", data.service_elevator_going_up ? "white" : "none");
-      $("div#service-elevator")
+        .css("fill", data.local_elevator.up ? "white" : "none");
+      $("div#local-elevator")
         .children("div.content-container")
         .children("svg.arrows")
         .children("g")
         .children(".down-arrow")
-        .css("fill", data.service_elevator_going_down ? "white" : "none");
-      $("div#service-elevator")
+        .css("fill", data.local_elevator.down ? "white" : "none");
+      $("div#local-elevator")
         .children("div.content-container")
         .children("p.elevator-floor")
-        .html(data.service_elevator_floor);
+        .html(data.local_elevator.floor);
 
       // Express Elevator
       $("div#express-elevator")
@@ -176,17 +179,17 @@
         .children("svg.arrows")
         .children("g")
         .children(".up-arrow")
-        .css("fill", data.express_elevator_going_up ? "white" : "none");
+        .css("fill", data.express_elevator.up ? "white" : "none");
       $("div#express-elevator")
         .children("div.content-container")
         .children("svg.arrows")
         .children("g")
         .children(".down-arrow")
-        .css("fill", data.express_elevator_going_down ? "white" : "none");
+        .css("fill", data.express_elevator.down ? "white" : "none");
       $("div#express-elevator")
         .children("div.content-container")
         .children("p.elevator-floor")
-        .html(data.express_elevator_floor);
+        .html(data.express_elevator.floor);
     });
   </script>
 </html>

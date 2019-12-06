@@ -1,8 +1,0 @@
-{
-  "service_elevator_going_up": false,
-  "service_elevator_going_down": false,
-  "service_elevator_floor": 13,
-  "express_elevator_going_up": false,
-  "express_elevator_going_down": true,
-  "express_elevator_floor": 14
-}
