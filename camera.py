@@ -7,6 +7,10 @@ class CustomVideoCapture(cv2.VideoCapture):
     def capture(self):
         return self.read()[1]
 
+    def warmup(self, n):
+        for _ in range(n):
+            self.capture()
+
 
 class GetCamera:
     def __init__(self, port=DEFAULT_PORT):
