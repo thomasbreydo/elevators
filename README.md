@@ -72,5 +72,6 @@ sudo apt install libtesseract-dev
 ## Ports
 
 1. 5000 - Web Page
-2. 5001 - Middlware to Api
-3. 5002 - CV2 to Middleware
+2. 5001 - Api to Middleware - When go to /api
+3. 5002 - Middleware to Api - When data updates
+4. 5003 - Elevator Script to Middleware - When the elevator
