@@ -8,10 +8,10 @@ STOP_CHAR = 'q'
 PORT = 0  # if reading from file, set PORT to the video's path
 
 # ymin, ymax, xmin, xmax
-ARROW1 = (647, 671, 740, 779)
-ARROW2 = (646, 670, 812, 845)
-FLOOR1 = (577, 644, 741, 777)
-FLOOR2 = (574, 644, 809, 848)
+ARROW1 = (500, 521, 860, 874)
+ARROW2 = (545, 568, 858, 874)
+FLOOR1 = (500, 521, 876, 925)
+FLOOR2 = (544, 568, 874, 926)
 
 
 def was_not_stopped():
@@ -36,10 +36,14 @@ def main():
                            FLOOR2[2]: FLOOR2[3]]
 
             # rotate
-            rotated_arrow1 = cv2.rotate(arrow1, cv2.ROTATE_90_CLOCKWISE)
-            rotated_arrow2 = cv2.rotate(arrow2, cv2.ROTATE_90_CLOCKWISE)
-            rotated_floor1 = cv2.rotate(floor1, cv2.ROTATE_90_CLOCKWISE)
-            rotated_floor2 = cv2.rotate(floor2, cv2.ROTATE_90_CLOCKWISE)
+            # cv2.rotate(arrow1, cv2.ROTATE_90_CLOCKWISE)
+            rotated_arrow1 = arrow1
+            # cv2.rotate(arrow2, cv2.ROTATE_90_CLOCKWISE)
+            rotated_arrow2 = arrow2
+            # cv2.rotate(floor1, cv2.ROTATE_90_CLOCKWISE)
+            rotated_floor1 = floor1
+            # cv2.rotate(floor2, cv2.ROTATE_90_CLOCKWISE)
+            rotated_floor2 = floor2
 
             # parse
             parser_arrow1 = parser.ElevatorParser(rotated_arrow1)
@@ -59,6 +63,7 @@ def main():
             print('\n\n')
             print(elevator1)
             print(elevator2)
+
 
 if __name__ == "__main__":
     main()

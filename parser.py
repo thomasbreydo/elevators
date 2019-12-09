@@ -7,6 +7,6 @@ class ElevatorParser:
 
     def parse(self):
         return ptt.image_to_string(
-            self.image, lang="arrowsplusminus+segment",
+            self.image, lang="arrowsplusminus+eng",
             config='-c tessedit_char_whitelist=0123456789+- '
-            + '--psm 10 --oem 3')
+            + '--psm 7 --oem 3')
