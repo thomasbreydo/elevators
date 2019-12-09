@@ -1,21 +1,15 @@
+from multiprocessing import Process
 from flask_socketio import SocketIO, emit
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template
 import time
 import json
+import zmq
 
+context = zmq.Context()
 
-data = {
-    'local_elevator': {
-        'up': False,
-        'down': False,
-        'floor': '--'
-    },
-    'express_elevator': {
-        'up': False,
-        'down': False,
-        'floor': '--'
-    }
-}
+socket = context.socket(zmq.REQ)
+socket.connect("tcp://localhost:5001")
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '5b6db414d4fd764a'
@@ -44,46 +38,34 @@ def connected():
     emit('data', json.dumps(data))
 
 
+def listener():
+    while True:
+        message = socket.recv()
+        socketio.emit('data', message, broadcast=True)
+        socket.send('Broadcasted')
+
+
 def main():
-    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
-
-
-def parse_floors_str(local_elevator, express_elevator):
-    global data
+    main_listener = Process(target=listener)
+    main_listener.start()
     try:
-        local_elevator = local_elevator.replace(' ', '')
-        express_elevator = express_elevator.replace(' ', '')
-        if '+' in local_elevator:
-            data['local_elevator']['up'] = True
-            data['local_elevator']['down'] = False
-            data['local_elevator']['floor'] = local_elevator.replace('+', '')
-        elif '-' in local_elevator:
-            data['local_elevator']['up'] = False
-            data['local_elevator']['down'] = True
-            data['local_elevator']['floor'] = local_elevator.replace('-', '')
-        else:
-            data['local_elevator']['up'] = False
-            data['local_elevator']['down'] = False
-            data['local_elevator']['floor'] = local_elevator
-
-        if '+' in express_elevator:
-            data['express_elevator']['up'] = True
-            data['express_elevator']['down'] = False
-            data['express_elevator']['floor'] = express_elevator.replace(
-                '+', '')
-        elif '-' in express_elevator:
-            data['express_elevator']['up'] = False
-            data['express_elevator']['down'] = True
-            data['express_elevator']['floor'] = express_elevator.replace(
-                '-', '')
-        else:
-            data['express_elevator']['up'] = False
-            data['express_elevator']['down'] = False
-            data['express_elevator']['floor'] = express_elevator
-
-    except:
-        print('Error occured in api.py!')
+        socketio.run(app, host='0.0.0.0', port=5000, debug=True)
+    except KeyboardInterrupt:
+        main_listener.join()
 
 
 if __name__ == "__main__":
     main()
+
+# data = {
+#     'local_elevator': {
+#         'up': False,
+#         'down': False,
+#         'floor': '--'
+#     },
+#     'express_elevator': {
+#         'up': False,
+#         'down': False,
+#         'floor': '--'
+#     }
+# }

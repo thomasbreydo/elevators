@@ -152,9 +152,7 @@
     });
 
     socket.on("data", function(data) {
-      console.log(data);
       data = JSON.parse(data);
-      // console.log(data);
       // Local Elevator
       $("div#local-elevator")
         .children("div.content-container")

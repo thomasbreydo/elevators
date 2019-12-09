@@ -68,3 +68,9 @@ sudo apt install libtesseract-dev
 - [ ] Add a Flask server that serves the information as an api
 - [ ] Find a location for the Raspberry Pi and the camera
 - [ ] Deploy to a Raspberry Pi
+
+## Ports
+
+1. 5000 - Web Page
+2. 5001 - Middlware to Api
+3. 5002 - CV2 to Middleware
