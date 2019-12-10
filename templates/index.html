@@ -153,6 +153,8 @@
 
     socket.on("data", function(data) {
       data = JSON.parse(data);
+      console.log(data);
+
       // Local Elevator
       $("div#local-elevator")
         .children("div.content-container")
